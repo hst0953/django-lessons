@@ -2,4 +2,11 @@ from django.db import models
 
 # Create your models here.
 class Article(models.Model):
-    pass
+    title = models.CharField(max_length=255)
+    full_text = models.TextField()
+    summary = models.CharField(max_length=255)
+    category = models.CharField(max_length=255)
+    pubdate = models.DateTimeField()
+    # slug = ... #TODO
+    # is_published = models.BooleanField() #TODO
+    

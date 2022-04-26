@@ -4,8 +4,35 @@ from blog.views import home_page
 from django.http import HttpRequest  
 from blog.models import Article 
 from selenium import webdriver
+from datetime import datetime
+
 
 class HomePageTest(TestCase):
+
+    def test_home_page_displays_articles(self):
+        Article.objects.create(
+            title = 'title 1',
+            summary = 'summary 1',
+            full_text = 'full_text 1',
+            pubdate = datetime.now()
+        )
+        Article.objects.create(
+            title = 'title 2',
+            summary = 'summary 2',
+            full_text = 'full_text 2',
+            pubdate = datetime.now()
+        )
+        request = HttpRequest()  
+        response = home_page(request) 
+        html = response.content.decode('utf8')
+
+        self.assertIn('title 1', html)
+        self.assertIn('summary 1', html)
+        self.assertNotIn('full_text 1', html)
+
+        self.assertIn('title 2', html)
+        self.assertIn('summary 2', html)
+        self.assertNotIn('full_text 2', html)
 
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')  
@@ -17,8 +44,8 @@ class HomePageTest(TestCase):
         html = response.content.decode('utf8')
 
         self.assertTrue(html.startswith('<html>'))  
-        self.assertIn('<title>To-Do lists</title>', html)
-        self.assertIn('<h1>To-Do lists</h1>', html)
+        self.assertIn('<title>Какая-то страница</title>', html)
+        self.assertIn('<h1>Виктор Болдырев</h1>', html)
         self.assertTrue(html.endswith('</html>'))
 
 
@@ -30,7 +57,7 @@ class HomePageTest(TestCase):
             full_text = 'full_text 1',
             summary = 'summary 1',
             category = 'category 1',
-            pubdate = 'pubdate 1',
+            pubdate = datetime.now(),
         )
         article1.save()
 
@@ -41,7 +68,7 @@ class HomePageTest(TestCase):
             full_text = 'full_text 2',
             summary = 'summary 2',
             category = 'category 2',
-            pubdate = 'pubdate 2',
+            pubdate = datetime.now(),
         )
         article2.save()
 
@@ -61,3 +88,4 @@ class HomePageTest(TestCase):
             all_articles[1].title,
             article2.title
         )
+
