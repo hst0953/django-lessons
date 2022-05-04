@@ -1,38 +1,33 @@
+from typing import Any
 from django.urls import resolve
 from django.test import TestCase
-from blog.views import home_page
+from blog.views import home_page, article_page
 from django.http import HttpRequest  
 from blog.models import Article 
 from selenium import webdriver
 from datetime import datetime
+import pytz
 
+class ArticlePageTest(TestCase):
 
-class HomePageTest(TestCase):
-
-    def test_home_page_displays_articles(self):
+    def test_article_page_displays_correct_article(self):
         Article.objects.create(
             title = 'title 1',
             summary = 'summary 1',
             full_text = 'full_text 1',
-            pubdate = datetime.now()
+            pubdate = datetime.utcnow().replace(tzinfo = pytz.utc),
+            slug = 'slug 1'
         )
-        Article.objects.create(
-            title = 'title 2',
-            summary = 'summary 2',
-            full_text = 'full_text 2',
-            pubdate = datetime.now()
-        )
-        request = HttpRequest()  
-        response = home_page(request) 
+
+        request = HttpRequest()
+        response = article_page(request, 'slug 1')
         html = response.content.decode('utf8')
 
         self.assertIn('title 1', html)
-        self.assertIn('summary 1', html)
-        self.assertNotIn('full_text 1', html)
+        self.assertIn('full_text 1', html)
+        self.assertNotIn('summary 1', html)
 
-        self.assertIn('title 2', html)
-        self.assertIn('summary 2', html)
-        self.assertNotIn('full_text 2', html)
+class HomePageTest(TestCase):
 
     def test_root_url_resolves_to_home_page_view(self):
         found = resolve('/')  
@@ -57,7 +52,8 @@ class HomePageTest(TestCase):
             full_text = 'full_text 1',
             summary = 'summary 1',
             category = 'category 1',
-            pubdate = datetime.now(),
+            pubdate = datetime.utcnow().replace(tzinfo = pytz.utc),
+            slug = 'slug-1'
         )
         article1.save()
 
@@ -68,7 +64,8 @@ class HomePageTest(TestCase):
             full_text = 'full_text 2',
             summary = 'summary 2',
             category = 'category 2',
-            pubdate = datetime.now(),
+            pubdate = datetime.utcnow().replace(tzinfo = pytz.utc),
+            slug = 'slug-2'
         )
         article2.save()
 
@@ -80,6 +77,16 @@ class HomePageTest(TestCase):
 
         # проверь: 1 загруженная из базы статья == статья 1
         self.assertEqual(
+            all_articles[0].slug,
+            article1.slug
+        )
+        # проверь: 2 загруженная из базы статья == статья 2
+        self.assertEqual(
+            all_articles[1].slug,
+            article2.slug
+        )
+
+        self.assertEqual(
             all_articles[0].title,
             article1.title
         )
@@ -88,4 +95,3 @@ class HomePageTest(TestCase):
             all_articles[1].title,
             article2.title
         )
-
