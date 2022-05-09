@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %} 
 Какая-то страница
 {% endblock %}
 
 {% block content %}
-    <h1>Виктор Болдырев</h1>
-
-    <div class="article">
-        <h2 class="article-title">{{ article.title }}</h2>
-         <p class="article-summary">{{article.summary}}</p>
-         <p class="full-text">{{ article.full_text }}</p>
-     </div>
+<div class="article">
+     <h2 class="article-title">{{ article.title }}</h2>
+      <p class="article-summary">{{article.summary}}</p>
+      <p class="full-text">{{ article.full_text }}</p>
+ </div>
     
 {% endblock %}

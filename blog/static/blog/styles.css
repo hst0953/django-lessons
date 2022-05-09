@@ -1,0 +1,58 @@
+body{
+    background-color: #2e2e2e;
+    color: rgb(231, 231, 231);
+    font-size: 18px;
+}
+
+h2.article-title{    
+    font-family: 'Roboto Flex', sans-serif;
+    font-weight: 800;
+}
+
+h2.article-title a{
+    text-decoration:none;
+    color:rgb(231, 231, 231);
+}
+
+h2.article-title a:hover{
+    color:rgb(235, 125, 125);
+}
+
+p.article-summary{
+    color:rgb(224, 224, 224);
+    font-family: 'Roboto Flex', sans-serif;
+    font-weight: 500;
+}
+
+p.full-text{
+    color:rgb(224, 224, 224);
+    font-family: 'Roboto Flex', sans-serif;
+    font-weight: 500;
+}
+
+h1, h2, h3{
+    font-family: 'Roboto Flex', sans-serif;
+    font-weight: 800;
+}
+
+h2{
+    font-size: 1.6em;
+}
+
+h3{
+    font-size: 1.3em;
+}
+
+h4, h5, h6{
+    font-size: 1em;
+}
+
+h1.avatar-top{
+    font-size: 2em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.article{
+    margin-bottom: 2em;
+}

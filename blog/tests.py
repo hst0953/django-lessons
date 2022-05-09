@@ -25,7 +25,7 @@ class ArticlePageTest(TestCase):
 
         self.assertIn('title 1', html)
         self.assertIn('full_text 1', html)
-        self.assertNotIn('summary 1', html)
+        self.assertIn('summary 1', html)
 
 class HomePageTest(TestCase):
 
