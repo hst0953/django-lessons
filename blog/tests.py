@@ -6,6 +6,7 @@ from django.http import HttpRequest
 from blog.models import Article 
 from selenium import webdriver
 from datetime import datetime
+from django.urls import reverse
 import pytz
 
 class ArticlePageTest(TestCase):
@@ -34,14 +35,9 @@ class HomePageTest(TestCase):
         self.assertEqual(found.func, home_page)  
 
     def test_home_page_returns_correct_html(self):
-        request = HttpRequest()  
-        response = home_page(request)  
-        html = response.content.decode('utf8')
-
-        self.assertTrue(html.startswith('<html>'))  
-        self.assertIn('<title>Какая-то страница</title>', html)
-        self.assertIn('<h1>Виктор Болдырев</h1>', html)
-        self.assertTrue(html.endswith('</html>'))
+        url = reverse('home_page')
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, 'home_page.html')
 
 
     def test_article_model_save_and_retrieve(self):

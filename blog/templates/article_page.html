@@ -2,14 +2,17 @@
 {% load static %}
 
 {% block title %} 
-Какая-то страница
+{{ article.title }}
 {% endblock %}
 
 {% block content %}
-<div class="article">
-     <h2 class="article-title">{{ article.title }}</h2>
-      <p class="article-summary">{{article.summary}}</p>
-      <p class="full-text">{{ article.full_text }}</p>
- </div>
-    
+<div class='row'>
+    <div class="col-md-8 col-sm-12">
+        <div class="article">
+            <h2 class="article-title">{{ article.title }}</h2>
+             <p class="article-summary">{{article.summary}}</p>
+             <p class="full-text">{{ article.full_text | safe }}</p>
+         </div>
+    </div>
+</div>
 {% endblock %}
